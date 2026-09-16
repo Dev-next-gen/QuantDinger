@@ -505,6 +505,8 @@ class USStockDataSource(BaseDataSource):
             
             
             klines = self._fetch_yahoo_chart(symbol, interval, start_date, end_date, effective_limit)
+            if klines and merge_factor > 1:
+                klines = self._merge_every_n_sorted_bars(klines, merge_factor)
             if not klines:
                 if timeframe in ('1m', '3m', '5m', '15m', '30m', '1H', '4H'):
                     # Nasdaq's intraday chart is a latest-session feed, not a
